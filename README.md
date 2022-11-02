@@ -8,7 +8,7 @@ cd fullstack-template
 npm install
 # in frontend folder 
 npm install
-# in backend folde
+# in backend folder
 #npm install
 # in fullstack-template (root) folder
 npm run dev
