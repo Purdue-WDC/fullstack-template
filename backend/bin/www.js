@@ -6,12 +6,13 @@
 
 import http from "http";
 
-import debug from "debug";
+import db from "debug";
+import mongoose from "mongoose";
 
 import app from "../app.js";
 
-debug("backend:server");
-
+const debug = db("backend:server");
+debug.enabled = process.env.NODE_ENV !== "production";
 /**
  * Get port from environment and store in Express.
  */
@@ -24,14 +25,16 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
+function getPromise() {
+  if (process.env.MONGODB_URL) {
+    console.log("MONGO DB URL found in env, connecting");
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+    const a = mongoose.connect(process.env.MONGODB_URL);
+    return a;
+  } else {
+    return Promise.resolve();
+  }
+}
 
 /**
  * Normalize a port into a number, string, or false.
@@ -52,7 +55,6 @@ function normalizePort(val) {
 
   return false;
 }
-
 /**
  * Event listener for HTTP server "error" event.
  */
@@ -86,5 +88,16 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
+
   debug(`Listening on ${bind}`);
 }
+
+getPromise().then((x) => {
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+
+  server.listen(port);
+  server.on("error", onError);
+  server.on("listening", onListening);
+});

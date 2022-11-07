@@ -3,6 +3,7 @@ import "./env.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import mongoose from "mongoose";
 import logger from "morgan";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
