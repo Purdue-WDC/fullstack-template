@@ -1,15 +1,17 @@
-var dotenv = require("dotenv");
-dotenv.config();
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-const cors = require("cors");
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+import "./env.js";
 
-var app = express();
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import express from "express";
+import logger from "morgan";
+import path from "node:path";
+import {fileURLToPath} from "node:url";
 
+import indexRouter from "./routes/index.js";
+import usersRouter from "./routes/users.js";
+
+const app = express();
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -20,4 +22,4 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
-module.exports = app;
+export default app;
