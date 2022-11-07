@@ -3,13 +3,12 @@ import "./env.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import mongoose from "mongoose";
 import logger from "morgan";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
 
+import blogRouter from "./routes/blog.js";
 import indexRouter from "./routes/index.js";
-import usersRouter from "./routes/users.js";
 
 const app = express();
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
@@ -21,6 +20,14 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use(
+  "/blog",
+  (req, res, next) => {
+    //
+    // check for password soon
+    // maybe on wed
+  },
+  blogRouter
+);
 
 export default app;
