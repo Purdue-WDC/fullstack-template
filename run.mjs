@@ -2,7 +2,7 @@ import "zx/globals";
 
 within(async () => {
   cd("backend");
-  await $`npm run start`;
+  await $`npm run dev`;
 });
 within(async () => {
   cd("frontend");
